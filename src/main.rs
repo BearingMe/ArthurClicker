@@ -1,3 +1,5 @@
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
 use arthur_clicker::app::ArthurClickerApp;
 use eframe::egui::{self, IconData, Vec2};
 use std::sync::Arc;
