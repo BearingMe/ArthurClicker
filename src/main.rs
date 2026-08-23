@@ -5,7 +5,7 @@ fn main() -> eframe::Result<()> {
     let native_options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
             .with_inner_size(Vec2::new(380.0, 520.0))
-            .with_min_inner_size(Vec2::new(350.0, 480.0))
+            .with_min_inner_size(Vec2::new(280.0, 350.0))
             .with_title("Arthur Auto Clicker"),
         ..Default::default()
     };
