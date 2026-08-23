@@ -1,6 +1,13 @@
 [package]
 name = "arthur_clicker"
 version = "0.1.0"
-edition = "2024"
+edition = "2021"
 
 [dependencies]
+eframe = "0.31"
+enigo = "0.3"
+global-hotkey = "0.6"
+keyboard-types = "0.7"
+serde = { version = "1.0", features = ["derive"] }
+toml = "0.8"
+directories = "5.0"
