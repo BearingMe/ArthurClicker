@@ -4,11 +4,12 @@
 Arthur Clicker is a lightweight, cross-platform desktop auto-clicker built in Rust using `eframe`/`egui`, `enigo`, and `global_hotkey`.
 
 ## Tech Stack
-- Rust 2021 / 2024
-- GUI: `eframe` / `egui` (0.36)
-- Input Simulation: `enigo` (0.6)
-- Global Hotkeys: `global-hotkey` (0.8)
+- Rust 2021
+- GUI: `eframe` / `egui` (0.31)
+- Input Simulation: `enigo` (0.3)
+- Global Hotkeys: `global-hotkey` (0.6)
 - Serialization & Storage: `serde`, `toml`, `directories`
+- Windows Cross-Compilation: `cargo-xwin`
 
 ## Commands
 ```bash
@@ -18,23 +19,28 @@ cargo build
 # Run application
 cargo run
 
-# Build release binary
+# Build release binary (Native)
 cargo build --release
 
-# Run unit tests
+# Cross-compile release binary for Windows (.exe) via cargo-xwin
+cargo xwin build --release --target x86_64-pc-windows-msvc
+
+# Run unit and integration/e2e tests
 cargo test
 
 # Check code / lint
 cargo check
-cargo clippy
+cargo clippy --all-targets
 ```
 
 ## Repository Structure & Architecture
+- `src/lib.rs`: Library root exposing engine, app, config, and hotkey modules.
 - `src/main.rs`: Entry point and `eframe` window launcher.
 - `src/app.rs`: UI interface, egui layout, and state orchestration.
 - `src/clicker.rs`: Background clicking engine using `enigo`.
 - `src/hotkey.rs`: Cross-platform global hotkey registration and event dispatching.
-- `src/config.rs`: Settings definition and TOML persistence.
+- `src/config.rs`: Settings definition, atomic file saving, and TOML persistence.
+- `tests/e2e_test.rs`: End-to-end integration tests.
 - `docs/`: Reference architecture, styleguide, design, and testing guides.
 
 **Architectural Boundaries:**
