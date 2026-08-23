@@ -197,8 +197,9 @@ impl eframe::App for ArthurClickerApp {
             egui::ScrollArea::vertical()
                 .auto_shrink([false, false])
                 .show(ui, |ui| {
-                    ui.spacing_mut().item_spacing = Vec2::new(8.0, 8.0);
+                    ui.spacing_mut().item_spacing = Vec2::new(8.0, 10.0);
 
+                    // Heading
                     ui.vertical_centered(|ui| {
                         ui.heading(RichText::new("Arthur Auto Clicker").size(18.0).strong());
                     });
@@ -207,251 +208,267 @@ impl eframe::App for ArthurClickerApp {
                     // 1. Click Interval
                     egui::Frame::group(ui.style()).show(ui, |ui| {
                         ui.set_width(ui.available_width());
-                        ui.label(RichText::new("Click Interval").strong());
-                        ui.horizontal_wrapped(|ui| {
-                            if ui
-                                .add(
-                                    egui::DragValue::new(&mut self.config.hours)
-                                        .speed(1)
-                                        .range(0..=999)
-                                        .suffix(" h"),
-                                )
-                                .changed()
-                            {
-                                config_changed = true;
-                            }
-                            if ui
-                                .add(
-                                    egui::DragValue::new(&mut self.config.minutes)
-                                        .speed(1)
-                                        .range(0..=59)
-                                        .suffix(" m"),
-                                )
-                                .changed()
-                            {
-                                config_changed = true;
-                            }
-                            if ui
-                                .add(
-                                    egui::DragValue::new(&mut self.config.seconds)
-                                        .speed(1)
-                                        .range(0..=59)
-                                        .suffix(" s"),
-                                )
-                                .changed()
-                            {
-                                config_changed = true;
-                            }
-                            if ui
-                                .add(
-                                    egui::DragValue::new(&mut self.config.milliseconds)
-                                        .speed(5)
-                                        .range(1..=999)
-                                        .suffix(" ms"),
-                                )
-                                .changed()
-                            {
-                                config_changed = true;
-                            }
+                        ui.vertical_centered(|ui| {
+                            ui.label(RichText::new("Click Interval").strong());
+                            ui.add_space(2.0);
+                            ui.horizontal_wrapped(|ui| {
+                                if ui
+                                    .add(
+                                        egui::DragValue::new(&mut self.config.hours)
+                                            .speed(1)
+                                            .range(0..=999)
+                                            .suffix(" h"),
+                                    )
+                                    .changed()
+                                {
+                                    config_changed = true;
+                                }
+                                if ui
+                                    .add(
+                                        egui::DragValue::new(&mut self.config.minutes)
+                                            .speed(1)
+                                            .range(0..=59)
+                                            .suffix(" m"),
+                                    )
+                                    .changed()
+                                {
+                                    config_changed = true;
+                                }
+                                if ui
+                                    .add(
+                                        egui::DragValue::new(&mut self.config.seconds)
+                                            .speed(1)
+                                            .range(0..=59)
+                                            .suffix(" s"),
+                                    )
+                                    .changed()
+                                {
+                                    config_changed = true;
+                                }
+                                if ui
+                                    .add(
+                                        egui::DragValue::new(&mut self.config.milliseconds)
+                                            .speed(5)
+                                            .range(1..=999)
+                                            .suffix(" ms"),
+                                    )
+                                    .changed()
+                                {
+                                    config_changed = true;
+                                }
+                            });
                         });
                     });
 
                     // 2. Click Options
                     egui::Frame::group(ui.style()).show(ui, |ui| {
                         ui.set_width(ui.available_width());
-                        ui.label(RichText::new("Click Options").strong());
-                        ui.horizontal_wrapped(|ui| {
-                            ui.label("Button:");
-                            egui::ComboBox::from_id_salt("mouse_button_combo")
-                                .selected_text(match self.config.mouse_button {
-                                    MouseButtonChoice::Left => "Left",
-                                    MouseButtonChoice::Middle => "Middle",
-                                    MouseButtonChoice::Right => "Right",
-                                })
-                                .show_ui(ui, |ui| {
-                                    if ui
-                                        .selectable_value(
-                                            &mut self.config.mouse_button,
-                                            MouseButtonChoice::Left,
-                                            "Left",
-                                        )
-                                        .clicked()
-                                        || ui
+                        ui.vertical_centered(|ui| {
+                            ui.label(RichText::new("Click Options").strong());
+                            ui.add_space(2.0);
+                            ui.horizontal_wrapped(|ui| {
+                                ui.label("Button:");
+                                egui::ComboBox::from_id_salt("mouse_button_combo")
+                                    .selected_text(match self.config.mouse_button {
+                                        MouseButtonChoice::Left => "Left",
+                                        MouseButtonChoice::Middle => "Middle",
+                                        MouseButtonChoice::Right => "Right",
+                                    })
+                                    .show_ui(ui, |ui| {
+                                        if ui
                                             .selectable_value(
                                                 &mut self.config.mouse_button,
-                                                MouseButtonChoice::Middle,
-                                                "Middle",
+                                                MouseButtonChoice::Left,
+                                                "Left",
                                             )
                                             .clicked()
-                                        || ui
-                                            .selectable_value(
-                                                &mut self.config.mouse_button,
-                                                MouseButtonChoice::Right,
-                                                "Right",
-                                            )
-                                            .clicked()
-                                    {
-                                        config_changed = true;
-                                    }
-                                });
+                                            || ui
+                                                .selectable_value(
+                                                    &mut self.config.mouse_button,
+                                                    MouseButtonChoice::Middle,
+                                                    "Middle",
+                                                )
+                                                .clicked()
+                                            || ui
+                                                .selectable_value(
+                                                    &mut self.config.mouse_button,
+                                                    MouseButtonChoice::Right,
+                                                    "Right",
+                                                )
+                                                .clicked()
+                                        {
+                                            config_changed = true;
+                                        }
+                                    });
 
-                            ui.add_space(8.0);
+                                ui.add_space(8.0);
 
-                            ui.label("Type:");
-                            egui::ComboBox::from_id_salt("click_type_combo")
-                                .selected_text(match self.config.click_type {
-                                    ClickTypeChoice::Single => "Single",
-                                    ClickTypeChoice::Double => "Double",
-                                    ClickTypeChoice::Triple => "Triple",
-                                })
-                                .show_ui(ui, |ui| {
-                                    if ui
-                                        .selectable_value(
-                                            &mut self.config.click_type,
-                                            ClickTypeChoice::Single,
-                                            "Single",
-                                        )
-                                        .clicked()
-                                        || ui
+                                ui.label("Type:");
+                                egui::ComboBox::from_id_salt("click_type_combo")
+                                    .selected_text(match self.config.click_type {
+                                        ClickTypeChoice::Single => "Single",
+                                        ClickTypeChoice::Double => "Double",
+                                        ClickTypeChoice::Triple => "Triple",
+                                    })
+                                    .show_ui(ui, |ui| {
+                                        if ui
                                             .selectable_value(
                                                 &mut self.config.click_type,
-                                                ClickTypeChoice::Double,
-                                                "Double",
+                                                ClickTypeChoice::Single,
+                                                "Single",
                                             )
                                             .clicked()
-                                        || ui
-                                            .selectable_value(
-                                                &mut self.config.click_type,
-                                                ClickTypeChoice::Triple,
-                                                "Triple",
-                                            )
-                                            .clicked()
-                                    {
-                                        config_changed = true;
-                                    }
-                                });
+                                            || ui
+                                                .selectable_value(
+                                                    &mut self.config.click_type,
+                                                    ClickTypeChoice::Double,
+                                                    "Double",
+                                                )
+                                                .clicked()
+                                            || ui
+                                                .selectable_value(
+                                                    &mut self.config.click_type,
+                                                    ClickTypeChoice::Triple,
+                                                    "Triple",
+                                                )
+                                                .clicked()
+                                        {
+                                            config_changed = true;
+                                        }
+                                    });
+                            });
                         });
                     });
 
                     // 3. Repeat Mode
                     egui::Frame::group(ui.style()).show(ui, |ui| {
                         ui.set_width(ui.available_width());
-                        ui.label(RichText::new("Click Repeat").strong());
-                        ui.horizontal_wrapped(|ui| {
-                            let mut is_indefinite =
-                                matches!(self.config.repeat_mode, RepeatModeChoice::Indefinite);
-                            if ui.radio_value(&mut is_indefinite, true, "Repeat until stopped").clicked() {
-                                self.config.repeat_mode = RepeatModeChoice::Indefinite;
-                                config_changed = true;
-                            }
+                        ui.vertical_centered(|ui| {
+                            ui.label(RichText::new("Click Repeat").strong());
+                            ui.add_space(2.0);
+                            ui.horizontal_wrapped(|ui| {
+                                let mut is_indefinite =
+                                    matches!(self.config.repeat_mode, RepeatModeChoice::Indefinite);
+                                if ui.radio_value(&mut is_indefinite, true, "Repeat until stopped").clicked() {
+                                    self.config.repeat_mode = RepeatModeChoice::Indefinite;
+                                    config_changed = true;
+                                }
 
-                            if ui.radio_value(&mut is_indefinite, false, "Repeat").clicked() {
-                                self.config.repeat_mode = RepeatModeChoice::Count(self.repeat_count_input);
-                                config_changed = true;
-                            }
+                                if ui.radio_value(&mut is_indefinite, false, "Repeat").clicked() {
+                                    self.config.repeat_mode = RepeatModeChoice::Count(self.repeat_count_input);
+                                    config_changed = true;
+                                }
 
-                            if !is_indefinite
-                                && ui
-                                    .add(
-                                        egui::DragValue::new(&mut self.repeat_count_input)
-                                            .speed(1)
-                                            .range(1..=100_000)
-                                            .suffix(" times"),
-                                    )
-                                    .changed()
-                            {
-                                self.config.repeat_mode =
-                                    RepeatModeChoice::Count(self.repeat_count_input);
-                                config_changed = true;
-                            }
+                                if !is_indefinite
+                                    && ui
+                                        .add(
+                                            egui::DragValue::new(&mut self.repeat_count_input)
+                                                .speed(1)
+                                                .range(1..=100_000)
+                                                .suffix(" times"),
+                                        )
+                                        .changed()
+                                {
+                                    self.config.repeat_mode =
+                                        RepeatModeChoice::Count(self.repeat_count_input);
+                                    config_changed = true;
+                                }
+                            });
                         });
                     });
 
                     // 4. Cursor Position
                     egui::Frame::group(ui.style()).show(ui, |ui| {
                         ui.set_width(ui.available_width());
-                        ui.label(RichText::new("Cursor Position").strong());
-                        let mut is_current_pos =
-                            matches!(self.config.cursor_mode, CursorModeChoice::CurrentPosition);
+                        ui.vertical_centered(|ui| {
+                            ui.label(RichText::new("Cursor Position").strong());
+                            ui.add_space(2.0);
+                            let mut is_current_pos =
+                                matches!(self.config.cursor_mode, CursorModeChoice::CurrentPosition);
 
-                        ui.horizontal_wrapped(|ui| {
-                            if ui.radio_value(&mut is_current_pos, true, "Current location").clicked() {
-                                self.config.cursor_mode = CursorModeChoice::CurrentPosition;
-                                config_changed = true;
-                            }
-                            if ui.radio_value(&mut is_current_pos, false, "Fixed coordinate").clicked() {
-                                self.config.cursor_mode = CursorModeChoice::Fixed {
-                                    x: self.fixed_x_input,
-                                    y: self.fixed_y_input,
-                                };
-                                config_changed = true;
-                            }
-                        });
-
-                        if !is_current_pos {
                             ui.horizontal_wrapped(|ui| {
-                                ui.label("X:");
-                                if ui
-                                    .add(egui::DragValue::new(&mut self.fixed_x_input).speed(1))
-                                    .changed()
-                                {
+                                if ui.radio_value(&mut is_current_pos, true, "Current location").clicked() {
+                                    self.config.cursor_mode = CursorModeChoice::CurrentPosition;
+                                    config_changed = true;
+                                }
+                                if ui.radio_value(&mut is_current_pos, false, "Fixed coordinate").clicked() {
                                     self.config.cursor_mode = CursorModeChoice::Fixed {
                                         x: self.fixed_x_input,
                                         y: self.fixed_y_input,
                                     };
                                     config_changed = true;
-                                }
-
-                                ui.label("Y:");
-                                if ui
-                                    .add(egui::DragValue::new(&mut self.fixed_y_input).speed(1))
-                                    .changed()
-                                {
-                                    self.config.cursor_mode = CursorModeChoice::Fixed {
-                                        x: self.fixed_x_input,
-                                        y: self.fixed_y_input,
-                                    };
-                                    config_changed = true;
-                                }
-
-                                let pick_btn_label = if let Some(target_time) = self.picking_location_countdown {
-                                    let remaining = target_time.saturating_duration_since(Instant::now()).as_secs_f32();
-                                    format!("⏳ Move mouse ({:.1}s)...", remaining.max(0.1))
-                                } else {
-                                    "📍 Pick in 3s".to_string()
-                                };
-
-                                if ui.button(pick_btn_label).clicked() && self.picking_location_countdown.is_none() {
-                                    self.picking_location_countdown = Some(Instant::now() + Duration::from_secs(3));
                                 }
                             });
-                        }
+
+                            if !is_current_pos {
+                                ui.add_space(2.0);
+                                ui.horizontal_wrapped(|ui| {
+                                    ui.label("X:");
+                                    if ui
+                                        .add(egui::DragValue::new(&mut self.fixed_x_input).speed(1))
+                                        .changed()
+                                    {
+                                        self.config.cursor_mode = CursorModeChoice::Fixed {
+                                            x: self.fixed_x_input,
+                                            y: self.fixed_y_input,
+                                        };
+                                        config_changed = true;
+                                    }
+
+                                    ui.label("Y:");
+                                    if ui
+                                        .add(egui::DragValue::new(&mut self.fixed_y_input).speed(1))
+                                        .changed()
+                                    {
+                                        self.config.cursor_mode = CursorModeChoice::Fixed {
+                                            x: self.fixed_x_input,
+                                            y: self.fixed_y_input,
+                                        };
+                                        config_changed = true;
+                                    }
+
+                                    let pick_btn_label = if let Some(target_time) = self.picking_location_countdown {
+                                        let remaining = target_time.saturating_duration_since(Instant::now()).as_secs_f32();
+                                        format!("⏳ Move mouse ({:.1}s)...", remaining.max(0.1))
+                                    } else {
+                                        "📍 Pick in 3s".to_string()
+                                    };
+
+                                    if ui.button(pick_btn_label).clicked() && self.picking_location_countdown.is_none() {
+                                        self.picking_location_countdown = Some(Instant::now() + Duration::from_secs(3));
+                                    }
+                                });
+                            }
+                        });
                     });
 
                     // 5. Hotkey & Controls
                     egui::Frame::group(ui.style()).show(ui, |ui| {
                         ui.set_width(ui.available_width());
-                        ui.horizontal_wrapped(|ui| {
-                            ui.label(RichText::new("Global Hotkey:").strong());
-                            let hotkey_text = if self.capturing_hotkey {
-                                "Press key (Esc to cancel)...".to_string()
-                            } else {
-                                let mut display = self.config.hotkey.modifiers.join("+");
-                                if !display.is_empty() {
-                                    display.push('+');
-                                }
-                                display.push_str(&self.config.hotkey.key);
-                                display
-                            };
+                        ui.vertical_centered(|ui| {
+                            ui.horizontal_wrapped(|ui| {
+                                ui.label(RichText::new("Global Hotkey:").strong());
+                                let hotkey_text = if self.capturing_hotkey {
+                                    "Press key (Esc to cancel)...".to_string()
+                                } else {
+                                    let mut display = self.config.hotkey.modifiers.join("+");
+                                    if !display.is_empty() {
+                                        display.push('+');
+                                    }
+                                    display.push_str(&self.config.hotkey.key);
+                                    display
+                                };
 
-                            if ui.button(hotkey_text).clicked() {
-                                self.capturing_hotkey = true;
+                                if ui.button(hotkey_text).clicked() {
+                                    self.capturing_hotkey = true;
+                                }
+                            });
+
+                            if let Some(msg) = &self.hotkey_status_message {
+                                ui.add_space(2.0);
+                                ui.label(RichText::new(msg).color(Color32::from_rgb(255, 100, 100)).size(11.0));
                             }
                         });
-
-                        if let Some(msg) = &self.hotkey_status_message {
-                            ui.label(RichText::new(msg).color(Color32::from_rgb(255, 100, 100)).size(11.0));
-                        }
                     });
 
                     ui.add_space(4.0);
