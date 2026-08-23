@@ -1,62 +1,76 @@
 # Arthur Clicker
 
 <p align="center">
-  <img src="assets/icon.png" width="128" alt="Arthur Clicker Logo" />
+  <img src="assets/icon.png" width="120" alt="Arthur Clicker Logo" />
 </p>
 
-Arthur Clicker is a lightweight, cross-platform desktop auto-clicker built in Rust using [`eframe`](https://github.com/emilk/egui), [`enigo`](https://github.com/enigo-rs/enigo), and [`global-hotkey`](https://github.com/tauri-apps/global-hotkey).
+<p align="center">
+  <strong>A lightning-fast, modern, and simple desktop auto-clicker.</strong><br>
+  Built with Rust for cross-platform reliability, low memory usage, and near-zero CPU footprint.
+</p>
 
-## Features
+<p align="center">
+  <img src="docs/assets/screenshot.png" width="540" alt="Arthur Clicker Preview" />
+</p>
 
-- **Adjustable Click Interval**: Hours, Minutes, Seconds, and Milliseconds.
-- **Mouse Button Selection**: Left, Middle, Right.
-- **Click Types**: Single, Double, Triple clicks.
-- **Repeat Modes**: Repeat indefinitely or repeat a fixed number of times.
-- **Cursor Modes**: Current cursor location or fixed target coordinates (with a 3-second hover picker).
-- **Global Hotkey**: Configurable start/stop global shortcut (default `F6`) with modifier support (`Ctrl`, `Alt`, `Shift`, `Cmd`).
-- **Responsive Dark UI**: Centered, adaptive interface that scales cleanly across resolutions.
-- **Settings Persistence**: Atomic TOML configuration saved across launches.
+---
 
-## Building and Running
+## ✨ Why Arthur Clicker?
 
-### Prerequisites
-- [Rust](https://www.rust-lang.org/tools/install) (2021 edition)
+Arthur Clicker is designed to give you effortless mouse automation without clutter, intrusive ads, or complex setups. Whether you are automating repetitive tasks, testing UI workflows, or gaming, Arthur Clicker stays lightweight and ready in the background.
 
-### Native Build (macOS / Linux / Windows)
+- ⏱ **Precise Timing**: Set delays down to the exact millisecond, second, minute, or hour.
+- 🖱 **Flexible Clicks**: Choose Left, Middle, or Right clicks with Single, Double, or Triple tap options.
+- 🎯 **Pinpoint Location**: Click wherever your cursor is, or pick a fixed coordinate on screen with an automatic 3-second countdown helper.
+- 🔁 **Custom Limits**: Repeat indefinitely or stop automatically after a specific number of clicks.
+- ⌨️ **Global Hotkey**: Press `F6` (or customize your own shortcut) to start and stop anytime—even while in full-screen games or other apps.
+- 💾 **Remember Your Settings**: Your preferences are saved automatically so everything is right where you left it next time.
+
+---
+
+## 🚀 Quick Start
+
+### 1. Download & Run
+Grab the latest release for your platform or build it yourself:
+
 ```bash
-# Run in development mode
-cargo run
+# Clone the repository
+git clone https://github.com/your-username/arthur_clicker.git
+cd arthur_clicker
 
-# Build optimized release binary
+# Run the app
+cargo run --release
+```
+
+### 2. How to Use
+1. **Set your interval**: Enter hours, minutes, seconds, or milliseconds between clicks.
+2. **Choose your button & click style**: Left/Right/Middle, Single/Double/Triple.
+3. **Choose where to click**: Leave on **Current location** or click **Fixed coordinate** and use **📍 Pick in 3s** to hover over your target.
+4. **Hit Start** or press **`F6`** on your keyboard to start clicking. Press **`F6`** again to stop!
+
+---
+
+## 🛠 For Developers: Building & Compiling
+
+### Build Locally (macOS, Windows, Linux)
+```bash
 cargo build --release
 ```
 
-### Windows Cross-Compilation via `cargo-xwin` (from macOS / Linux)
-
-To compile a native Windows `.exe` (`x86_64-pc-windows-msvc`) without needing a Windows machine:
-
-1. **Install `cargo-xwin` and the Windows MSVC target:**
-   ```bash
-   cargo install cargo-xwin
-   rustup target add x86_64-pc-windows-msvc
-   ```
-
-2. **Build the release `.exe`:**
-   ```bash
-   cargo xwin build --release --target x86_64-pc-windows-msvc
-   ```
-
-3. The generated executable will be located at:
-   ```text
-   target/x86_64-pc-windows-msvc/release/arthur_clicker.exe
-   ```
-
-## Running Tests
+### Cross-Compile for Windows `.exe` (from macOS or Linux)
+You can easily create a standalone Windows `.exe` using `cargo-xwin`:
 
 ```bash
-# Run all unit and integration/e2e tests
-cargo test
+# One-time setup
+cargo install cargo-xwin
+rustup target add x86_64-pc-windows-msvc
 
-# Run linter checks
-cargo clippy --all-targets
+# Build Windows release binary
+cargo xwin build --release --target x86_64-pc-windows-msvc
+```
+The resulting executable will be in `target/x86_64-pc-windows-msvc/release/arthur_clicker.exe`.
+
+### Running Tests
+```bash
+cargo test
 ```
