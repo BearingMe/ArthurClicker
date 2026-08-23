@@ -12,6 +12,7 @@ pub struct ClickerTaskConfig {
     pub click_type: ClickTypeChoice,
     pub repeat_mode: RepeatModeChoice,
     pub cursor_mode: CursorModeChoice,
+    pub initial_delay: Duration,
 }
 
 /// RAII Drop Guard ensuring `running` atomic flag is reset on normal exit or panic
@@ -70,6 +71,17 @@ impl ClickerEngine {
 
         let handle = thread::spawn(move || {
             let _guard = RunningSentinel(Arc::clone(&running_flag));
+
+            // Initial startup delay to prevent immediately clicking under the Start button
+            if config.initial_delay > Duration::ZERO {
+                let mut remaining_init = config.initial_delay;
+                let step = Duration::from_millis(15);
+                while remaining_init > Duration::ZERO && running_flag.load(Ordering::SeqCst) {
+                    let to_sleep = remaining_init.min(step);
+                    thread::sleep(to_sleep);
+                    remaining_init = remaining_init.saturating_sub(to_sleep);
+                }
+            }
 
             let mut enigo = match Enigo::new(&Settings::default()) {
                 Ok(e) => e,

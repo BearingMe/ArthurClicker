@@ -61,6 +61,7 @@ fn test_e2e_clicker_lifecycle_and_bounded_execution() {
         click_type: ClickTypeChoice::Single,
         repeat_mode: RepeatModeChoice::Count(3),
         cursor_mode: CursorModeChoice::CurrentPosition,
+        initial_delay: Duration::ZERO,
     };
 
     engine.start(task);
@@ -87,6 +88,7 @@ fn test_e2e_clicker_instant_stop() {
         click_type: ClickTypeChoice::Single,
         repeat_mode: RepeatModeChoice::Indefinite,
         cursor_mode: CursorModeChoice::CurrentPosition,
+        initial_delay: Duration::ZERO,
     };
 
     engine.start(task);
