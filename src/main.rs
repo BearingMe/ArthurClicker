@@ -1,9 +1,4 @@
-mod app;
-mod clicker;
-mod config;
-mod hotkey;
-
-use app::ArthurClickerApp;
+use arthur_clicker::app::ArthurClickerApp;
 use eframe::egui::{self, Vec2};
 
 fn main() -> eframe::Result<()> {

@@ -29,6 +29,12 @@ pub struct ClickerEngine {
     worker_handle: Option<JoinHandle<()>>,
 }
 
+impl Default for ClickerEngine {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ClickerEngine {
     pub fn new() -> Self {
         Self {

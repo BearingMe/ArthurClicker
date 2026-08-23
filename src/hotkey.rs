@@ -7,6 +7,12 @@ pub struct HotkeyService {
     current_hotkey: Option<HotKey>,
 }
 
+impl Default for HotkeyService {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl HotkeyService {
     pub fn new() -> Self {
         let manager = GlobalHotKeyManager::new().ok();
